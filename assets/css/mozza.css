@@ -1,0 +1,22 @@
+.special {
+    color: #d73160;
+    font-weight: bold;
+    font-family: 'Source Sans Pro', serif;
+}
+
+.content a {
+    color: #555;
+}
+
+body article.page .content li p:last-child,
+body article.page .content li p:last-child {
+    margin-bottom: inherit;
+}
+
+body article.page .content > :last-child {
+    margin-bottom: 3em;
+}
+
+body article.page .big-image .inner .fader .text {
+    width: 100%;
+}

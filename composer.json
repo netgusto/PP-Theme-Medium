@@ -1,0 +1,26 @@
+{
+    "name": "netgusto/mozza-theme-medium",
+    "version": "1.0.0",
+    "type": "package",
+    "description": "Medium theme for Mozza",
+    "keywords": ["silex", "theme", "mozza", "medium"],
+    "homepage": "https://github.com/netgusto/mozza-theme-medium",
+    "license": "MIT",
+    "authors": [
+        {
+          "name": "Net Gusto",
+          "email": "contact@netgusto.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+    },
+    "suggest": {
+    },
+    "autoload": {},
+    "target-dir": "",
+    "extra": {
+    }
+}

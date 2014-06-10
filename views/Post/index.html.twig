@@ -1,0 +1,62 @@
+{% extends '@MozzaTheme/base.html.twig' %}
+
+{% import _self as macros %}
+
+{% macro article(classes, post) %}
+{% spaceless %}
+{% set prevpost = previouspost(post) %}
+{% if prevpost %}
+    {% set followingslug = prevpost.slug %}
+{% else %}
+    {% set followingslug = null %}
+{% endif %}
+{% endspaceless %}
+<article class="page {{ classes }}" data:slug="{{ post.slug }}" data:followingslug="{{ followingslug }}">
+    <div class='big-image' style="background-image: url({{ post.image|toresourceurl(post) }});">
+        <div class='inner'>
+            <div class='fader'>
+                <div class='text'>
+                    <a class='goto-next'>Read Next</a>
+                    <h1 class='title'>{{ post.title }}</h1>
+                    <h2 class='description'>{{ post.intro|inlinemarkdown }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='content'>
+        <h3 class='byline'>
+            Published <time>{{ post.date|date(config.date.format) }}</time> by <span class='author'>{{ post.author }}</span>.
+        </h3>
+        <h1 class='title'>{{ post.title }}</h1>
+        <h2 class='description'>{{ post.intro|inlinemarkdown }}</h2>
+        <div class='text'>
+            
+            {{ post.content|markdown }}
+
+        </div>
+    </div>
+</article>
+{% endmacro %}
+
+{% block body %}
+
+{% set posturl = app.url_generator.generate('post', { slug: post.slug }) %}
+{% set homeurl = app.url_generator.generate('home') %}
+
+{{ macros.article('current', post) }}
+
+{% if previouspost is defined and previouspost %}
+    {{ macros.article('following content-hidden', previouspost) }}
+{% endif %}
+
+{% endblock body %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    window.siteurl = {{ '/'|toabsoluteurl|json_encode|raw }}
+    window.posturl = {{ path('post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }}
+    window.jsonposturl = {{ path('json.post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }}
+    require(['post/main']);
+</script>
+{% endblock %}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    {% if post is defined %}{{ component_metatags(post) }}
+    {% else %}{{ component_metatags() }}
+    {% endif %}
+
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, minimum-scale=1.0, maximum-scale=2.0">
+    
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+    <!-- Theme Styles -->
+    <link rel='stylesheet' href='{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/css/styles.css' type='text/css'>
+    <link rel='stylesheet' href='{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/css/mozza.css' type='text/css'>
+
+    <script type="text/javascript" src="{{ app.request.basepath }}/vendor/modernizr/modernizr/modernizr.min.js"></script>
+
+    {% block head %}
+    {% include '@Custom/head.html.twig' %}
+    {% endblock head %}
+</head>
+<body>
+
+    {% block header %}{% endblock header %}
+
+    {% block body %}{% endblock body %}
+
+    {% block footer %}{% endblock footer %}
+
+    {% block javascripts %}
+    <script type="text/javascript" src="{{ app.request.basepath }}/vendor/requirejs/requirejs/require.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: '{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/js',
+            paths: {
+                'jquery': '{{ app.request.basepath }}/vendor/jquery/jquery/jquery-2.1.0.min'
+            },
+            shim: {}
+        });
+    </script>
+    {% endblock %}
+
+</body>
+</html>
