@@ -17,6 +17,18 @@ body article.page .content > :last-child {
     margin-bottom: 3em;
 }
 
+body article.page .big-image .inner .fader {
+    display: table;
+}
+
 body article.page .big-image .inner .fader .text {
+    display: table-cell;
+    vertical-align: middle;
     width: 100%;
+    left: initial;
+    top: initial;
+    position: initial;
+    transform: none;
+    -moz-transform: none;
+    -webkit-transform: none;
 }

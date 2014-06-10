@@ -5,6 +5,14 @@
 {% macro article(classes, post) %}
 {% spaceless %}
 {% if post %}
+    {% set slug = post.slug %}
+    {% set imageurl = post.image|toresourceurl(post) %}
+    {% set title = post.title %}
+    {% set intro = post.intro|inlinemarkdown %}
+    {% set date = post.date|date(config.date.format) %}
+    {% set author = post.author %}
+    {% set content = post.content|markdown %}
+    
     {% set prevpost = previouspost(post) %}
     {% if prevpost %}
         {% set followingslug = prevpost.slug %}
@@ -12,30 +20,38 @@
         {% set followingslug = null %}
     {% endif %}
 {% else %}
-    {% set followingslug = null %}
+    {% set slug = '' %}
+    {% set imageurl = '' %}
+    {% set title = '' %}
+    {% set intro = '' %}
+    {% set date = '' %}
+    {% set author = '' %}
+    {% set content = '' %}
+
+    {% set followingslug = '' %}
 {% endif %}
 {% endspaceless %}
-<article class="page {{ classes }}" data:slug="{{ post.slug|default('') }}" data:followingslug="{{ followingslug }}">
-    <div class='big-image' style="background-image: url({{ (post.image|default(''))|toresourceurl(post) }});">
+<article class="page {{ classes }}" data:slug="{{ slug }}" data:followingslug="{{ followingslug }}">
+    <div class='big-image' style="background-image: url({{ imageurl }});">
         <div class='inner'>
             <div class='fader'>
                 <div class='text'>
                     <a class='goto-next'>Read Next</a>
-                    <h1 class='title'>{{ post.title }}</h1>
-                    <h2 class='description'>{{ post.intro|inlinemarkdown }}</h2>
+                    <h1 class='title'>{{ title|raw }}</h1>
+                    <h2 class='description'>{{ intro|raw }}</h2>
                 </div>
             </div>
         </div>
     </div>
     <div class='content'>
         <h3 class='byline'>
-            Published <time>{{ post.date|date(config.date.format) }}</time> by <span class='author'>{{ post.author }}</span>.
+            Published <time>{{ date|raw }}</time> by <span class='author'>{{ author|raw }}</span>.
         </h3>
-        <h1 class='title'>{{ post.title }}</h1>
-        <h2 class='description'>{{ post.intro|inlinemarkdown }}</h2>
+        <h1 class='title'>{{ title|raw }}</h1>
+        <h2 class='description'>{{ intro|raw }}</h2>
         <div class='text'>
             
-            {{ post.content|markdown }}
+            {{ content|raw }}
 
         </div>
     </div>
