@@ -8,14 +8,12 @@
     return ArticleAnimator = (function() {
       function ArticleAnimator(articleSelector) {
         this.elementToTemplate = __bind(this.elementToTemplate, this);
-        this.createArticleFromTemplate = __bind(this.createArticleFromTemplate, this);
         this.createTemplateFromArticle = __bind(this.createTemplateFromArticle, this);
-        this.injectDataInArticle = __bind(this.injectDataInArticle, this);
+        this.injectPostInArticle = __bind(this.injectPostInArticle, this);
         this.scrollTop = __bind(this.scrollTop, this);
         this.animatePage = __bind(this.animatePage, this);
         this.fetchPostThenExecuteCallback = __bind(this.fetchPostThenExecuteCallback, this);
         this.getPostUrlFromSlug = __bind(this.getPostUrlFromSlug, this);
-        this.getCurrentArticleSlug = __bind(this.getCurrentArticleSlug, this);
         this.pushCurrentState = __bind(this.pushCurrentState, this);
         var eventname;
         this.canScroll = true;
@@ -28,18 +26,35 @@
         })(this));
         $(window).on('popstate', (function(_this) {
           return function(e) {
-            console.log('LAAAAAAA', e.state);
-            return console.log(history.state);
-
-            /*
-            self.currentPostIndex = history.state.index;
-            self.$current.replaceWith( history.state.current );
-            self.$next.replaceWith( history.state.next );
-            
-            self.refreshCurrentAndNextSelection();
-            self.createPost({ type: 'next' });
-            self.bindGotoNextClick();
-             */
+            if (!history.state) {
+              return;
+            }
+            if (!window.posts[history.state.slug]) {
+              _this.fetchPostThenExecuteCallback(history.state.slug, function(post) {
+                window.posts[post.slug] = post;
+                return _this.injectPostInArticle(_this.currentArticle, post);
+              });
+            } else {
+              _this.injectPostInArticle(_this.currentArticle, window.posts[history.state.slug]);
+            }
+            if (history.state.followingslug) {
+              if (!window.posts[history.state.followingslug]) {
+                return _this.fetchPostThenExecuteCallback(history.state.followingslug, function(post) {
+                  window.posts[post.slug] = post;
+                  if (!_this.followingArticle.get(0).parentNode) {
+                    _this.followingArticle.insertAfter(_this.currentArticle);
+                  }
+                  return _this.injectPostInArticle(_this.followingArticle, post);
+                });
+              } else {
+                if (!_this.followingArticle.get(0).parentNode) {
+                  _this.followingArticle.insertAfter(_this.currentArticle);
+                }
+                return _this.injectPostInArticle(_this.followingArticle, window.posts[history.state.followingslug]);
+              }
+            } else {
+              return _this.followingArticle.remove();
+            }
           };
         })(this));
         this.articleSelector = articleSelector;
@@ -56,20 +71,25 @@
             return _this.animatePage();
           };
         })(this));
-        this.pushCurrentState();
+        this.pushCurrentState(true);
       }
 
-      ArticleAnimator.prototype.pushCurrentState = function() {
-        var currentArticleSlug, pagestate;
-        currentArticleSlug = this.getCurrentArticleSlug();
+      ArticleAnimator.prototype.pushCurrentState = function(replace) {
+        var currentArticleSlug, followingArticleSlug, pagestate;
+        if (replace == null) {
+          replace = false;
+        }
+        currentArticleSlug = this.currentArticle.attr('data:slug');
+        followingArticleSlug = this.currentArticle.attr('data:followingslug');
         pagestate = {
-          slug: currentArticleSlug
+          slug: currentArticleSlug,
+          followingslug: followingArticleSlug
         };
-        return history.pushState(pagestate, "", this.getPostUrlFromSlug(currentArticleSlug));
-      };
-
-      ArticleAnimator.prototype.getCurrentArticleSlug = function() {
-        return this.currentArticle.attr('data:slug');
+        if (replace) {
+          return history.replaceState(pagestate, "", this.getPostUrlFromSlug(currentArticleSlug));
+        } else {
+          return history.pushState(pagestate, "", this.getPostUrlFromSlug(currentArticleSlug));
+        }
       };
 
       ArticleAnimator.prototype.getPostUrlFromSlug = function(slug) {
@@ -95,7 +115,7 @@
         });
         timeoutFunc = (function(_this) {
           return function() {
-            var followingslug;
+            var doWhenPostAvailable, followingslug;
             _this.scrollTop();
             _this.followingArticle.removeClass('easing-upward');
             _this.currentArticle.remove();
@@ -106,22 +126,23 @@
             _this.currentArticle = _this.followingArticle;
             _this.followingArticle = _this.followingTemplate.clone();
             _this.canScroll = true;
-            _this.pushCurrentState();
             followingslug = _this.currentArticle.attr('data:followingslug');
             if (followingslug && followingslug !== 'null') {
-              return _this.fetchPostThenExecuteCallback(followingslug, function(post) {
-                _this.injectDataInArticle(_this.followingArticle, {
-                  image: post.image,
-                  title: post.title,
-                  intro: post.intro,
-                  content: post.content,
-                  time: post.date_human,
-                  author: post.author,
-                  slug: post.slug,
-                  followingslug: post.previous_slug
+              doWhenPostAvailable = function(post) {
+                _this.injectPostInArticle(_this.followingArticle, post);
+                _this.followingArticle.insertAfter(_this.currentArticle);
+                return _this.pushCurrentState();
+              };
+              if (window.posts[followingslug]) {
+                return doWhenPostAvailable(window.posts[followingslug]);
+              } else {
+                return _this.fetchPostThenExecuteCallback(followingslug, function(post) {
+                  window.posts[post.slug] = post;
+                  return doWhenPostAvailable(post);
                 });
-                return _this.followingArticle.insertAfter(_this.currentArticle);
-              });
+              }
+            } else {
+              return _this.pushCurrentState();
             }
           };
         })(this);
@@ -132,33 +153,27 @@
         return $(document.body).add($(window.html)).scrollTop(0);
       };
 
-      ArticleAnimator.prototype.injectDataInArticle = function(article, data) {
+      ArticleAnimator.prototype.injectPostInArticle = function(article, post) {
         var bgimage;
-        bgimage = data.image ? 'url(' + data.image + ')' : '';
-        article.attr('data:slug', data.slug);
-        article.attr('data:followingslug', data.followingslug);
+        bgimage = post.image ? 'url(' + post.image + ')' : '';
+        article.attr('data:slug', post.slug);
+        article.attr('data:followingslug', post.previous_slug);
         article.find('.big-image').css({
           backgroundImage: bgimage
         });
-        article.find('h1.title').html(data.title || '');
-        article.find('h2.description').html(data.intro || '');
-        article.find('.content .text').html(data.content || '');
-        article.find('h3.byline time').html(data.time || '');
-        article.find('h3.byline .author').html(data.author || '');
-        article.find('h3.byline .about').html(data.about || '');
+        article.find('h1.title').html(post.title || '');
+        article.find('h2.description').html(post.intro || '');
+        article.find('.content .text').html(post.content || '');
+        article.find('h3.byline time').html(post.date_human || '');
+        article.find('h3.byline .author').html(post.author || '');
+        article.find('h3.byline .about').html(post.about || '');
         return article;
       };
 
       ArticleAnimator.prototype.createTemplateFromArticle = function(article) {
         var template;
         template = article.clone();
-        return this.injectDataInArticle(template, {});
-      };
-
-      ArticleAnimator.prototype.createArticleFromTemplate = function(data) {
-        var article;
-        article = this.articleTemplate.clone();
-        return this.injectDataInArticle(article, data);
+        return this.injectPostInArticle(template, {});
       };
 
       ArticleAnimator.prototype.elementToTemplate = function(element) {

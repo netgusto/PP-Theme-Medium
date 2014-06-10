@@ -4,15 +4,19 @@
 
 {% macro article(classes, post) %}
 {% spaceless %}
-{% set prevpost = previouspost(post) %}
-{% if prevpost %}
-    {% set followingslug = prevpost.slug %}
+{% if post %}
+    {% set prevpost = previouspost(post) %}
+    {% if prevpost %}
+        {% set followingslug = prevpost.slug %}
+    {% else %}
+        {% set followingslug = null %}
+    {% endif %}
 {% else %}
     {% set followingslug = null %}
 {% endif %}
 {% endspaceless %}
-<article class="page {{ classes }}" data:slug="{{ post.slug }}" data:followingslug="{{ followingslug }}">
-    <div class='big-image' style="background-image: url({{ post.image|toresourceurl(post) }});">
+<article class="page {{ classes }}" data:slug="{{ post.slug|default('') }}" data:followingslug="{{ followingslug }}">
+    <div class='big-image' style="background-image: url({{ (post.image|default(''))|toresourceurl(post) }});">
         <div class='inner'>
             <div class='fader'>
                 <div class='text'>
@@ -47,6 +51,8 @@
 
 {% if previouspost is defined and previouspost %}
     {{ macros.article('following content-hidden', previouspost) }}
+{% else %}
+    {{ macros.article('following content-hidden') }}
 {% endif %}
 
 {% endblock body %}
@@ -54,9 +60,15 @@
 {% block javascripts %}
 {{ parent() }}
 <script type="text/javascript">
-    window.siteurl = {{ '/'|toabsoluteurl|json_encode|raw }}
-    window.posturl = {{ path('post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }}
-    window.jsonposturl = {{ path('json.post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }}
+    window.siteurl = {{ '/'|toabsoluteurl|json_encode|raw }};
+    window.posturl = {{ path('post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }};
+    window.jsonposturl = {{ path('json.post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }};
+
+    window.posts = {};
+    window.posts[{{ post.slug|json_encode|raw}}] = {{ post|serializepost|json_encode|raw }};
+    {% if previouspost is defined and previouspost %}
+    window.posts[{{ previouspost.slug|json_encode|raw}}] = {{ previouspost|serializepost|json_encode|raw }};
+    {% endif %}
     require(['post/main']);
 </script>
 {% endblock %}
