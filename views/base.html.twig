@@ -53,15 +53,17 @@
                                         {% set year = archivedpost.date|date('Y') %}
                                         <li class="year">{{ year }}</li>
                                     {% endif %}
-                                    <li class="postitem"><a href="{{ posturl(archivedpost) }}"><time>{{ archivedpost.date|date(config.date.format) }}</time><span class="title">{{ archivedpost.title }}</span></a></li>
+                                    <li class="postitem"><a href="{{ posturl(archivedpost.slug) }}"><time>{{ archivedpost.date|date(config.date.format) }}</time><span class="title">{{ archivedpost.title }}</span></a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
                         </li>
                         {% endif %}
+                        {% if site.about is defined and site.about.slug is defined and site.about.slug|length %}
                         <li>
-                            <a href="/"><i class="fa fa-asterisk"></i> About</a>
+                            <a href="{{ posturl(site.about.slug) }}"><i class="fa fa-asterisk"></i> About</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
@@ -93,6 +95,8 @@
         });
     </script>
     {% endblock %}
+
+    {{ component_googleanalytics() }}
 
 </body>
 </html>

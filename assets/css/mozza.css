@@ -8,6 +8,10 @@
     color: #555;
 }
 
+.byline a {
+    color: inherit;
+}
+
 body article.page .content li p:last-child,
 body article.page .content li p:last-child {
     margin-bottom: inherit;

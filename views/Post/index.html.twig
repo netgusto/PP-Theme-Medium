@@ -11,6 +11,7 @@
     {% set intro = post.intro|inlinemarkdown %}
     {% set date = post.date|date(config.date.format) %}
     {% set author = post.author %}
+    {% set twitter = post.twitter %}
     {% set content = post.content|markdown %}
     
     {% set prevpost = previouspost(post) %}
@@ -26,6 +27,7 @@
     {% set intro = '' %}
     {% set date = '' %}
     {% set author = '' %}
+    {% set twitter = '' %}
     {% set content = '' %}
 
     {% set followingslug = '' %}
@@ -45,7 +47,7 @@
     </div>
     <div class='content'>
         <h3 class='byline'>
-            Published <time>{{ date|raw }}</time> by <span class='author'>{{ author|raw }}</span>.
+            Published <time>{{ date|raw }}</time> by <span class='author'>{% if twitter is defined and twitter|length %}<a href="http://twitter.com/{{ twitter }}">{{ author|raw }}</a>{% else %}{{ author|raw }}{% endif %}</span>.
         </h3>
         <h1 class='title'>{{ title|raw }}</h1>
         <h2 class='description'>{{ intro|raw }}</h2>

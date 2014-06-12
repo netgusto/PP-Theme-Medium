@@ -27,9 +27,15 @@ define ['jquery'], ($) ->
 
                         # We replace the current article
                         @injectPostInArticle(@currentArticle, post);
+
+                        # We notify the world about the post change
+                        @notifyTheWorldAboutHtml5PostChange(post)
                     );
                 else
                     @injectPostInArticle(@currentArticle, window.posts[history.state.slug]);
+                    
+                    # We notify the world about the post change
+                    @notifyTheWorldAboutHtml5PostChange(window.posts[history.state.slug])
 
                 if(history.state.followingslug)
                     if(!window.posts[history.state.followingslug])
@@ -72,16 +78,37 @@ define ['jquery'], ($) ->
                 # Everything starts here
                 e.preventDefault()
                 @followingArticle.removeClass('next-hidden')
-                @animatePage()
+                @animatePage((post) =>
+                    @notifyTheWorldAboutHtml5PostChange(post)
+                )
             )
 
             # We set the first step of the history
             @pushCurrentState(true)
 
+        notifyTheWorldAboutHtml5PostChange: (post) =>
+
+            console.log('notifyTheWorldAboutHtml5PostChange', post)
+
+            # We inform the world about the post change
+            $('html').trigger('mozza:html5postchange', {
+                post: post
+            })
+
+            $('html').trigger('mozza:html5urlchange', {
+                url: post.url
+            })
+
+        getSlugFromArticleElement: (article) =>
+            return article.attr('data:slug')
+
+        getFollowingSlugFromArticleElement: (article) =>
+            return article.attr('data:followingslug')
+
         pushCurrentState: (replace = false) =>
             # We push the current step of the history
-            currentArticleSlug = @currentArticle.attr('data:slug')
-            followingArticleSlug = @currentArticle.attr('data:followingslug')
+            currentArticleSlug = @getSlugFromArticleElement(@currentArticle)
+            followingArticleSlug = @getFollowingSlugFromArticleElement(@currentArticle)
             pagestate = {
                 slug: currentArticleSlug,
                 followingslug: followingArticleSlug
@@ -102,7 +129,7 @@ define ['jquery'], ($) ->
                 success: cbk
             })
 
-        animatePage: () =>
+        animatePage: (cbk) =>
             
             @canScroll = no
 
@@ -121,6 +148,8 @@ define ['jquery'], ($) ->
                 @followingArticle.css({ "transform": "" })
                 @followingArticle.addClass('current')
                 @currentArticle = @followingArticle
+
+                cbk(window.posts[@getSlugFromArticleElement(@currentArticle)])
 
                 # We have to create the new following article
                 @followingArticle = @followingTemplate.clone()

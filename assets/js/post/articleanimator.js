@@ -15,6 +15,9 @@
         this.fetchPostThenExecuteCallback = __bind(this.fetchPostThenExecuteCallback, this);
         this.getPostUrlFromSlug = __bind(this.getPostUrlFromSlug, this);
         this.pushCurrentState = __bind(this.pushCurrentState, this);
+        this.getFollowingSlugFromArticleElement = __bind(this.getFollowingSlugFromArticleElement, this);
+        this.getSlugFromArticleElement = __bind(this.getSlugFromArticleElement, this);
+        this.notifyTheWorldAboutHtml5PostChange = __bind(this.notifyTheWorldAboutHtml5PostChange, this);
         var eventname;
         this.canScroll = true;
         $(window).on('mousewheel', (function(_this) {
@@ -32,10 +35,12 @@
             if (!window.posts[history.state.slug]) {
               _this.fetchPostThenExecuteCallback(history.state.slug, function(post) {
                 window.posts[post.slug] = post;
-                return _this.injectPostInArticle(_this.currentArticle, post);
+                _this.injectPostInArticle(_this.currentArticle, post);
+                return _this.notifyTheWorldAboutHtml5PostChange(post);
               });
             } else {
               _this.injectPostInArticle(_this.currentArticle, window.posts[history.state.slug]);
+              _this.notifyTheWorldAboutHtml5PostChange(window.posts[history.state.slug]);
             }
             if (history.state.followingslug) {
               if (!window.posts[history.state.followingslug]) {
@@ -69,19 +74,39 @@
           return function(e) {
             e.preventDefault();
             _this.followingArticle.removeClass('next-hidden');
-            return _this.animatePage();
+            return _this.animatePage(function(post) {
+              return _this.notifyTheWorldAboutHtml5PostChange(post);
+            });
           };
         })(this));
         this.pushCurrentState(true);
       }
+
+      ArticleAnimator.prototype.notifyTheWorldAboutHtml5PostChange = function(post) {
+        console.log('notifyTheWorldAboutHtml5PostChange', post);
+        $('html').trigger('mozza:html5postchange', {
+          post: post
+        });
+        return $('html').trigger('mozza:html5urlchange', {
+          url: post.url
+        });
+      };
+
+      ArticleAnimator.prototype.getSlugFromArticleElement = function(article) {
+        return article.attr('data:slug');
+      };
+
+      ArticleAnimator.prototype.getFollowingSlugFromArticleElement = function(article) {
+        return article.attr('data:followingslug');
+      };
 
       ArticleAnimator.prototype.pushCurrentState = function(replace) {
         var currentArticleSlug, followingArticleSlug, pagestate;
         if (replace == null) {
           replace = false;
         }
-        currentArticleSlug = this.currentArticle.attr('data:slug');
-        followingArticleSlug = this.currentArticle.attr('data:followingslug');
+        currentArticleSlug = this.getSlugFromArticleElement(this.currentArticle);
+        followingArticleSlug = this.getFollowingSlugFromArticleElement(this.currentArticle);
         pagestate = {
           slug: currentArticleSlug,
           followingslug: followingArticleSlug
@@ -106,7 +131,7 @@
         });
       };
 
-      ArticleAnimator.prototype.animatePage = function() {
+      ArticleAnimator.prototype.animatePage = function(cbk) {
         var timeoutFunc, translationValue;
         this.canScroll = false;
         translationValue = this.followingArticle.get(0).getBoundingClientRect().top;
@@ -125,6 +150,7 @@
             });
             _this.followingArticle.addClass('current');
             _this.currentArticle = _this.followingArticle;
+            cbk(window.posts[_this.getSlugFromArticleElement(_this.currentArticle)]);
             _this.followingArticle = _this.followingTemplate.clone();
             _this.canScroll = true;
             followingslug = _this.currentArticle.attr('data:followingslug');
