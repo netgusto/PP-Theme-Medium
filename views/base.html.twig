@@ -11,10 +11,15 @@
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 
     <!-- Theme Styles -->
+    <link rel='stylesheet' href='{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/css/menu/normalize.css' type='text/css'>
+    <link rel='stylesheet' href='{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/css/menu/component.css' type='text/css'>
     <link rel='stylesheet' href='{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/css/styles.css' type='text/css'>
     <link rel='stylesheet' href='{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/css/mozza.css' type='text/css'>
 
     <script type="text/javascript" src="{{ app.request.basepath }}/vendor/modernizr/modernizr/modernizr.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/font-awesome/font-awesome/css/font-awesome.min.css">
 
     {% block head %}
     {% include '@Custom/head.html.twig' %}
@@ -24,7 +29,55 @@
 
     {% block header %}{% endblock header %}
 
-    {% block body %}{% endblock body %}
+    <div class="mp-container">
+        <!-- Push Wrapper -->
+        <div class="mp-pusher" id="mp-pusher">
+     
+            <!-- mp-menu -->
+            <nav id="mp-menu" class="mp-menu">
+                <div class="mp-level">
+                    <p class="columnheader">{{ site.title }}</p>
+                    <ul>
+                        <li>
+                            <a href="/"><i class="fa fa-home"></i> Home</a>
+                        </li>
+                        {% if posts is defined and posts|length %}
+                        <li>
+                            <a href="#"><i class="fa fa-history"></i> Archives</a>
+                            <div class="mp-level postslist">
+                                <p class="columnheader"><i class="fa fa-history"></i> Archives</p>
+                                <ul>
+                                    {% set year = null %}
+                                    {% for archivedpost in posts %}
+                                    {% if year != archivedpost.date|date('Y') %}
+                                        {% set year = archivedpost.date|date('Y') %}
+                                        <li class="year">{{ year }}</li>
+                                    {% endif %}
+                                    <li class="postitem"><a href="{{ posturl(archivedpost) }}"><time>{{ archivedpost.date|date(config.date.format) }}</time><span class="title">{{ archivedpost.title }}</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a href="/"><i class="fa fa-asterisk"></i> About</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- /mp-menu -->
+     
+            <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+                <div class="scroller-inner">
+                    <p id="menu-trigger"><a id="trigger" class="fa fa-asterisk"></a></p>
+                    <!-- site content goes here -->
+                    {% block body %}{% endblock body %}
+                    </div>
+                </div><!-- /scroller-inner -->
+            </div><!-- /scroller -->
+     
+        </div><!-- /pusher -->
+    </div><!-- /container -->
 
     {% block footer %}{% endblock footer %}
 

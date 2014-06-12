@@ -65,11 +65,13 @@ define ['jquery'], ($) ->
 
             @followingTemplate = @createTemplateFromArticle(@followingArticle)
 
-            eventname = if Modernizr.touch then 'touchstart' else 'click'
+            #eventname = if Modernizr.touch then 'touch' else 'click'
+            eventname = 'click'
             $('html').on(eventname, @followingArticleSelector + ' .big-image', (e) =>
                 
                 # Everything starts here
                 e.preventDefault()
+                @followingArticle.removeClass('next-hidden')
                 @animatePage()
             )
 
@@ -153,7 +155,7 @@ define ['jquery'], ($) ->
             window.setTimeout(timeoutFunc, 500)
 
         scrollTop: () =>
-            $(document.body).add($(window.html)).scrollTop(0)
+            $(document.body).add($(window.html)).add($('.scroller')).scrollTop(0)
 
         injectPostInArticle: (article, post) =>
             bgimage = if post.image then 'url(' + post.image + ')' else ''
@@ -173,6 +175,7 @@ define ['jquery'], ($) ->
 
         createTemplateFromArticle: (article) =>
             template = article.clone()
+            template.removeClass('next-hidden')
             @injectPostInArticle(template, {})
 
         elementToTemplate: (element) =>

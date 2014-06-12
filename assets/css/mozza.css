@@ -32,3 +32,118 @@ body article.page .big-image .inner .fader .text {
     -moz-transform: none;
     -webkit-transform: none;
 }
+
+body article.page.next-hidden .goto-next {
+    display: none;
+}
+
+/* Menu specific styles */
+
+#menu-trigger {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 35px;
+    height: 35px;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+    color: white;
+    font-size: 24px;
+
+    top: 8px;
+    left: 8px;
+}
+
+@media only screen and (min-width: 640px) {
+    top: 10px;
+    left: 10px;
+}
+
+#menu-trigger a {
+    color: white;
+    display: block;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.mp-pusher.mp-pushed #mp-menu.mp-overlap {
+    box-shadow: 1px 0 2px rgba(0,0,0,0.2);
+}
+
+#mp-menu .columnheader {
+    font-size: 2em;
+    text-align: center;
+    color: #666;
+    padding: 0 10px;
+}
+
+.mp-menu ul li > a {
+    color: #777;
+    text-decoration: none;
+}
+
+.mp-level-current {
+    overflow-y: scroll;
+}
+
+.mp-pushed #menu-trigger {
+    opacity: 0.6;
+}
+
+.mp-menu .postslist .postitem time {
+    font-size: 0.8em;
+    display: block;
+}
+
+.mp-menu .postslist .postitem .title {
+}
+
+.mp-menu ul li > a {
+    box-shadow: none;
+}
+
+.mp-level > ul > li:first-child > a {
+    box-shadow: none;
+}
+
+.mp-menu .postslist .year {
+    text-align: right;
+    font-size: 2em;
+    padding: 10px;
+    padding-top: 20px;
+    box-shadow: inset 0 -1px rgba(0,0,0,0.12);
+}
+
+
+
+
+/* mp-menu */
+
+html, 
+body, 
+.mp-container,
+.scroller {
+    height: 100%;
+}
+ 
+.scroller {
+    overflow-y: scroll;
+    background-color: white;
+}
+ 
+.scroller,
+.scroller-inner {
+    position: relative;
+}
+ 
+.mp-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.mp-level {
+    background: white;
+}

@@ -64,10 +64,11 @@
         this.followingArticle = $(this.followingArticleSelector);
         this.articleTemplate = this.createTemplateFromArticle(this.currentArticle);
         this.followingTemplate = this.createTemplateFromArticle(this.followingArticle);
-        eventname = Modernizr.touch ? 'touchstart' : 'click';
+        eventname = 'click';
         $('html').on(eventname, this.followingArticleSelector + ' .big-image', (function(_this) {
           return function(e) {
             e.preventDefault();
+            _this.followingArticle.removeClass('next-hidden');
             return _this.animatePage();
           };
         })(this));
@@ -150,7 +151,7 @@
       };
 
       ArticleAnimator.prototype.scrollTop = function() {
-        return $(document.body).add($(window.html)).scrollTop(0);
+        return $(document.body).add($(window.html)).add($('.scroller')).scrollTop(0);
       };
 
       ArticleAnimator.prototype.injectPostInArticle = function(article, post) {
@@ -173,6 +174,7 @@
       ArticleAnimator.prototype.createTemplateFromArticle = function(article) {
         var template;
         template = article.clone();
+        template.removeClass('next-hidden');
         return this.injectPostInArticle(template, {});
       };
 

@@ -68,7 +68,7 @@
 {% if previouspost is defined and previouspost %}
     {{ macros.article('following content-hidden', previouspost) }}
 {% else %}
-    {{ macros.article('following content-hidden') }}
+    {{ macros.article('following content-hidden next-hidden') }}
 {% endif %}
 
 {% endblock body %}
