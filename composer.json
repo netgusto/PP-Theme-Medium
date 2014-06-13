@@ -1,6 +1,6 @@
 {
     "name": "netgusto/mozza-theme-medium",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "package",
     "description": "Medium theme for Mozza",
     "keywords": ["silex", "theme", "mozza", "medium"],
