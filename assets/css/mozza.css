@@ -1,7 +1,7 @@
-.special {
-    color: #d73160;
-    font-weight: bold;
-    font-family: 'Source Sans Pro', serif;
+/* article styles; overrides styles.css */
+
+.container, body article.page .content {
+    max-width: 820px;   /* 700px + 3em (60px) each side */
 }
 
 .content a {
@@ -39,6 +39,19 @@ body article.page .big-image .inner .fader .text {
 
 body article.page.next-hidden {
     display: none;
+}
+
+/* Code blocks */
+pre code {
+    white-space: pre;
+    overflow-y: auto;
+    font-family: 'Source Sans Pro', monospace;
+    outline: 1px solid #EEE;
+    padding: 1em;
+}
+
+pre code.hljs {
+    padding: 0.6em 1em;
 }
 
 /* Menu specific styles */
