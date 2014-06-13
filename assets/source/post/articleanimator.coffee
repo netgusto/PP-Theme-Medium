@@ -89,7 +89,7 @@ define ['jquery'], ($) ->
             )
 
             # We set the first step of the history
-            #@pushCurrentState(true)
+            @pushCurrentState(true)
 
         postHasChanged: (post) =>
             window.document.title = window.titlepattern.replace(/\=posttitle\=/, post.title)
@@ -114,6 +114,7 @@ define ['jquery'], ($) ->
             return article.attr('data:followingslug')
 
         pushCurrentState: (replace = false) =>
+            
             @everPushedSomething = true
 
             # We push the current step of the history

@@ -86,6 +86,7 @@
             });
           };
         })(this));
+        this.pushCurrentState(true);
       }
 
       ArticleAnimator.prototype.postHasChanged = function(post) {
@@ -116,6 +117,7 @@
           replace = false;
         }
         this.everPushedSomething = true;
+        alert('yes push');
         currentArticleSlug = this.getSlugFromArticleElement(this.currentArticle);
         followingArticleSlug = this.getFollowingSlugFromArticleElement(this.currentArticle);
         pagestate = {
