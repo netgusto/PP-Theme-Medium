@@ -95,19 +95,13 @@
         require.config({
             baseUrl: '{{ app.request.basepath }}/vendor/netgusto/mozza-theme-medium/assets/js',
             paths: {
-                'jquery': '{{ app.request.basepath }}/vendor/jquery/jquery/jquery-2.1.0.min'
+                'jquery': '{{ app.request.basepath }}/vendor/jquery/jquery/jquery-2.1.0.min',
+                'highlightjs': '{{ app.request.basepath }}/vendor/zipball/highlightjs/highlight.pack'
             },
             shim: {}
         });
     </script>
     {% endblock %}
-
-    <!-- Highlight JS -->
-    <script src="{{ app.request.basepath }}/vendor/zipball/highlightjs/highlight.pack.js" type="text/javascript"></script>
-    <script>
-        hljs.configure({ tabReplace: '    '});  // 4 spaces
-        hljs.initHighlighting();
-    </script>
 
     {{ component_googleanalytics() }}
 

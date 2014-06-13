@@ -1,10 +1,14 @@
 define [
     'jquery',
+    'highlightjs',
     'post/articleanimator',
     'menu/classie',
     'menu/mlpushmenu'
-], ($, articleanimator, classie) ->
+], ($, highlightjs, articleanimator, classie) ->
     'use strict'
+
+    hljs.configure({ tabReplace: '    '})
+    hljs.initHighlighting()
 
     new articleanimator('article.page')
     window.classie = classie
@@ -12,6 +16,10 @@ define [
     new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) )
 
     $('html').on('mozza:html5urlchange', (e, data) ->
+
+        $('pre code').each((i, e) ->
+            hljs.highlightBlock(e)
+        )
 
         # update google analytics if present on page
         if(window.ga && typeof window.ga == 'function')

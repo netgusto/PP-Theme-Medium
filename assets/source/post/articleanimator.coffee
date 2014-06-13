@@ -12,10 +12,14 @@ define ['jquery'], ($) ->
                     e.preventDefault()
             )
 
+            $(window).on('load', (e) =>
+                @everPushedSomething = false
+            )
+
             # Taming the history
             $(window).on('popstate', (e) =>
 
-                if(!history.state)
+                if(!@everPushedSomething)
                     return
 
                 if(!window.posts[history.state.slug])
@@ -85,7 +89,7 @@ define ['jquery'], ($) ->
             )
 
             # We set the first step of the history
-            @pushCurrentState(true)
+            #@pushCurrentState(true)
 
         postHasChanged: (post) =>
             window.document.title = window.titlepattern.replace(/\=posttitle\=/, post.title)
@@ -110,6 +114,8 @@ define ['jquery'], ($) ->
             return article.attr('data:followingslug')
 
         pushCurrentState: (replace = false) =>
+            @everPushedSomething = true
+
             # We push the current step of the history
             currentArticleSlug = @getSlugFromArticleElement(@currentArticle)
             followingArticleSlug = @getFollowingSlugFromArticleElement(@currentArticle)

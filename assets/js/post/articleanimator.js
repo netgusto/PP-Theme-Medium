@@ -28,9 +28,14 @@
             }
           };
         })(this));
+        $(window).on('load', (function(_this) {
+          return function(e) {
+            return _this.everPushedSomething = false;
+          };
+        })(this));
         $(window).on('popstate', (function(_this) {
           return function(e) {
-            if (!history.state) {
+            if (!_this.everPushedSomething) {
               return;
             }
             if (!window.posts[history.state.slug]) {
@@ -81,7 +86,6 @@
             });
           };
         })(this));
-        this.pushCurrentState(true);
       }
 
       ArticleAnimator.prototype.postHasChanged = function(post) {
@@ -111,6 +115,7 @@
         if (replace == null) {
           replace = false;
         }
+        this.everPushedSomething = true;
         currentArticleSlug = this.getSlugFromArticleElement(this.currentArticle);
         followingArticleSlug = this.getFollowingSlugFromArticleElement(this.currentArticle);
         pagestate = {
