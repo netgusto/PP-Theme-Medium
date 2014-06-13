@@ -37,7 +37,7 @@ body article.page .big-image .inner .fader .text {
     -webkit-transform: none;
 }
 
-body article.page.next-hidden .goto-next {
+body article.page.next-hidden {
     display: none;
 }
 
@@ -93,6 +93,10 @@ body article.page.next-hidden .goto-next {
     overflow-y: scroll;
 }
 
+html.touch .mp-level-current {
+    -webkit-overflow-scrolling: touch;
+}
+
 .mp-pushed #menu-trigger {
     opacity: 0.6;
 }
@@ -136,6 +140,10 @@ body,
 .scroller {
     overflow-y: scroll;
     background-color: white;
+}
+
+html.touch .scroller {
+    -webkit-overflow-scrolling: touch;
 }
  
 .scroller,

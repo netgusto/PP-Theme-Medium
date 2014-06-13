@@ -68,10 +68,12 @@
                 </div>
             </nav>
             <!-- /mp-menu -->
+
+            <!-- menu trigger outside the scrolled, for the fixed positionning to not bug in iOS -->
+            <p id="menu-trigger"><a id="trigger" class="fa fa-asterisk"></a></p>
      
             <div class="scroller"><!-- this is for emulating position fixed of the nav -->
                 <div class="scroller-inner">
-                    <p id="menu-trigger"><a id="trigger" class="fa fa-asterisk"></a></p>
                     <!-- site content goes here -->
                     {% block body %}{% endblock body %}
                     </div>

@@ -81,6 +81,7 @@
     window.siteurl = {{ '/'|toabsoluteurl|json_encode|raw }};
     window.posturl = {{ path('post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }};
     window.jsonposturl = {{ path('json.post', { slug: '=slug=' })|toabsoluteurl|json_encode|raw }};
+    window.titlepattern = {{ documenttitleforposttitle('=posttitle=')|json_encode|raw }};
 
     window.posts = {};
     window.posts[{{ post.slug|json_encode|raw}}] = {{ post|serializepost|json_encode|raw }};

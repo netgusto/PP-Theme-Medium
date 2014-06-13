@@ -80,15 +80,19 @@ define ['jquery'], ($) ->
                 @followingArticle.removeClass('next-hidden')
                 @animatePage((post) =>
                     @notifyTheWorldAboutHtml5PostChange(post)
+                    @postHasChanged(post)
                 )
             )
 
             # We set the first step of the history
             @pushCurrentState(true)
 
+        postHasChanged: (post) =>
+            window.document.title = window.titlepattern.replace(/\=posttitle\=/, post.title)
+
         notifyTheWorldAboutHtml5PostChange: (post) =>
 
-            console.log('notifyTheWorldAboutHtml5PostChange', post)
+            @postHasChanged(post)
 
             # We inform the world about the post change
             $('html').trigger('mozza:html5postchange', {

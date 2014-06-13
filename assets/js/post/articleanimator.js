@@ -18,6 +18,7 @@
         this.getFollowingSlugFromArticleElement = __bind(this.getFollowingSlugFromArticleElement, this);
         this.getSlugFromArticleElement = __bind(this.getSlugFromArticleElement, this);
         this.notifyTheWorldAboutHtml5PostChange = __bind(this.notifyTheWorldAboutHtml5PostChange, this);
+        this.postHasChanged = __bind(this.postHasChanged, this);
         var eventname;
         this.canScroll = true;
         $(window).on('mousewheel', (function(_this) {
@@ -75,15 +76,20 @@
             e.preventDefault();
             _this.followingArticle.removeClass('next-hidden');
             return _this.animatePage(function(post) {
-              return _this.notifyTheWorldAboutHtml5PostChange(post);
+              _this.notifyTheWorldAboutHtml5PostChange(post);
+              return _this.postHasChanged(post);
             });
           };
         })(this));
         this.pushCurrentState(true);
       }
 
+      ArticleAnimator.prototype.postHasChanged = function(post) {
+        return window.document.title = window.titlepattern.replace(/\=posttitle\=/, post.title);
+      };
+
       ArticleAnimator.prototype.notifyTheWorldAboutHtml5PostChange = function(post) {
-        console.log('notifyTheWorldAboutHtml5PostChange', post);
+        this.postHasChanged(post);
         $('html').trigger('mozza:html5postchange', {
           post: post
         });
