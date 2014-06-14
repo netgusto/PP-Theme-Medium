@@ -41,6 +41,13 @@ body article.page.next-hidden {
     display: none;
 }
 
+body article.page .content img {
+    text-align: center;
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
 /* Code blocks */
 pre code {
     white-space: pre;
