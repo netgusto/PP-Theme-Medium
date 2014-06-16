@@ -6,7 +6,7 @@
 {% spaceless %}
 {% if post %}
     {% set slug = post.slug %}
-    {% set imageurl = post.image|toresourceurl(post) %}
+    {% set imageurl = post.image|topostresourceurl(post) %}
     {% set title = post.title %}
     {% set intro = post.intro|inlinemarkdown %}
     {% set date = post.date|date(config.date.format) %}
