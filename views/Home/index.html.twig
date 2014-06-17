@@ -1,0 +1,60 @@
+{% extends '@MozzaTheme/base.html.twig' %}
+
+{% block bodyclass %}home{% endblock %}
+{% block body %}
+
+{#<header class="site-head" style="background-image: url({{ site.images.cover|toresourceurl }})">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            {% if site.images.logo %}
+                <a class="blog-logo" href="{{ path('home') }}"><img src="{{ site.images.logo|toresourceurl }}" alt="{{ site.title }}" /></a>
+            {% endif %}
+            <h1 class="blog-title">{{ site.title }}</h1>
+            <h2 class="blog-description">{{ site.description }}</h2>
+        </div>
+    </div>
+</header>#}
+
+<main role="main">
+
+    <ul class="posts-bucket">
+    {% for post in posts %}
+        <li>
+        {% set posturl = posturl(post.slug)|toabsoluteurl %}
+        <article class="post">
+            <div class="post-header" style="background-image: url({{ post.image|topostresourceurl(post) }});">
+                <section class="post-excerpt">
+                    <div class="post-meta">
+                        <time datetime="{{ post.date|date('Y-m-d') }}">{{ post.date|date(config.date.format) }}</time>
+                        {% if post.about|length %} on
+                            {% if post.about|length == 1 %}
+                                {{ post.about|first }}
+                            {% else %}
+                                {{ post.about|slice(0, -1)|join(', ') }} and {{ post.about|slice(-1)|join('') }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <h1><a href="{{ posturl }}">{{ post.title }}</a></h1>
+                    <p>
+                        <a class="read-more" href="{{ posturl }}">
+                            {{ post.intro|inlinemarkdown }} &mdash; {{ post.content|markdown|striptags|truncate(260, true, '') }} &hellip;
+                        </a>
+                    </p>
+                </section>
+            </div>
+        </article>
+        </li>
+    {% endfor %}
+    </ul>
+</main>
+
+{% include "@MozzaTheme/Components/Pagination/index.html.twig" with { page: page, nbpages: nbpages } %}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    require(['home/main']);
+</script>
+{% endblock %}

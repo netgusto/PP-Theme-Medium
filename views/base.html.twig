@@ -29,7 +29,7 @@
     {% include '@Custom/head.html.twig' %}
     {% endblock head %}
 </head>
-<body>
+<body class="{% block bodyclass %}{% endblock %}">
 
     {% block header %}{% endblock header %}
 
