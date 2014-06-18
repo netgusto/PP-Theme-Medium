@@ -9,7 +9,7 @@
     {% set imageurl = post.image|topostresourceurl(post) %}
     {% set title = post.title %}
     {% set intro = post.intro|inlinemarkdown %}
-    {% set date = post.date|date(config.date.format) %}
+    {% set date = post.date|humandate %}
     {% set author = post.author %}
     {% set twitter = post.twitter %}
     {% set content = post.content|markdown %}

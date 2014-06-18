@@ -57,7 +57,7 @@
                                         {% set year = archivedpost.date|date('Y') %}
                                         <li class="year">{{ year }}</li>
                                     {% endif %}
-                                    <li class="postitem"><a href="{{ posturl(archivedpost.slug) }}"><time>{{ archivedpost.date|date(config.date.format) }}</time><span class="title">{{ archivedpost.title }}</span></a></li>
+                                    <li class="postitem"><a href="{{ posturl(archivedpost.slug) }}"><time>{{ archivedpost.date|humandate }}</time><span class="title">{{ archivedpost.title }}</span></a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
