@@ -99,11 +99,11 @@ define ['jquery'], ($) ->
             @postHasChanged(post)
 
             # We inform the world about the post change
-            $('html').trigger('mozza:html5postchange', {
+            $('html').trigger('pulpy:html5postchange', {
                 post: post
             })
 
-            $('html').trigger('mozza:html5urlchange', {
+            $('html').trigger('pulpy:html5urlchange', {
                 url: post.url
             })
 

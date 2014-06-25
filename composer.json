@@ -1,10 +1,10 @@
 {
-    "name": "netgusto/mozza-theme-medium",
-    "version": "1.0.14",
+    "name": "netgusto/pulpy-theme-medium",
+    "version": "1.0.15",
     "type": "package",
-    "description": "Medium theme for Mozza",
-    "keywords": ["silex", "theme", "mozza", "medium"],
-    "homepage": "https://github.com/netgusto/mozza-theme-medium",
+    "description": "Medium theme for Pulpy",
+    "keywords": ["silex", "theme", "pulpy", "medium"],
+    "homepage": "https://github.com/netgusto/pulpy-theme-medium",
     "license": "MIT",
     "authors": [
         {

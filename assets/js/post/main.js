@@ -9,7 +9,7 @@
     new articleanimator('article.page');
     window.classie = classie;
     new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
-    return $('html').on('mozza:html5urlchange', function(e, data) {
+    return $('html').on('pulpy:html5urlchange', function(e, data) {
       var a;
       $('pre code').each(function(i, e) {
         return hljs.highlightBlock(e);

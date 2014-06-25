@@ -15,7 +15,7 @@ define [
 
     new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) )
 
-    $('html').on('mozza:html5urlchange', (e, data) ->
+    $('html').on('pulpy:html5urlchange', (e, data) ->
 
         $('pre code').each((i, e) ->
             hljs.highlightBlock(e)

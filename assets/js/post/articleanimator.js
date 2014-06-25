@@ -95,10 +95,10 @@
 
       ArticleAnimator.prototype.notifyTheWorldAboutHtml5PostChange = function(post) {
         this.postHasChanged(post);
-        $('html').trigger('mozza:html5postchange', {
+        $('html').trigger('pulpy:html5postchange', {
           post: post
         });
-        return $('html').trigger('mozza:html5urlchange', {
+        return $('html').trigger('pulpy:html5urlchange', {
           url: post.url
         });
       };
