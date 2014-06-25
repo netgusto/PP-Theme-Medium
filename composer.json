@@ -1,6 +1,6 @@
 {
     "name": "netgusto/pulpy-theme-medium",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "type": "package",
     "description": "Medium theme for Pulpy",
     "keywords": ["silex", "theme", "pulpy", "medium"],
