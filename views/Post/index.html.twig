@@ -62,8 +62,8 @@
 
 {% block body %}
 
-{% set posturl = app.url_generator.generate('post', { slug: post.slug }) %}
-{% set homeurl = app.url_generator.generate('home') %}
+{% set posturl = posturl(post.slug) %}
+{% set homeurl = path('home') %}
 
 {{ macros.article('current', post) }}
 

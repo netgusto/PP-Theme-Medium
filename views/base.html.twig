@@ -25,9 +25,7 @@
     <!-- Highlightjs Styles for this theme -->
     <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/zipball/highlightjs/styles/railscasts.css">
 
-    {% block head %}
-    {% include '@Custom/head.html.twig' %}
-    {% endblock head %}
+    {% block head %}{% endblock head %}
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
 
@@ -40,7 +38,7 @@
             <!-- mp-menu -->
             <nav id="mp-menu" class="mp-menu">
                 <div class="mp-level">
-                    <p class="columnheader">{{ site.title }}</p>
+                    <p class="columnheader">{{ siteconfig().title }}</p>
                     <ul>
                         <li>
                             <a href="/"><i class="fa fa-home"></i> Home</a>
@@ -63,9 +61,9 @@
                             </div>
                         </li>
                         {% endif %}
-                        {% if site.about is defined and site.about.slug is defined and site.about.slug|length %}
+                        {% if siteconfig().about is defined and siteconfig().about.slug is defined and siteconfig().about.slug|length %}
                         <li>
-                            <a href="{{ posturl(site.about.slug) }}"><i class="fa fa-asterisk"></i> About</a>
+                            <a href="{{ posturl(siteconfig().about.slug) }}"><i class="fa fa-asterisk"></i> About</a>
                         </li>
                         {% endif %}
                     </ul>
